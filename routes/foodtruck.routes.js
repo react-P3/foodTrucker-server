@@ -37,9 +37,9 @@ router.get("/", (req, res, next) => {
             res.json(response)
         })
         .catch(err => {
-            console.log("error getting list of trucks", err);
+            console.log("error getting list of foodtrucks", err);
             res.status(500).json({
-                message: "error getting list of trucks",
+                message: "error getting list of foodtrucks",
                 error: err
             });
         })

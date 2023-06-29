@@ -1,5 +1,5 @@
 const router = require("express").Router();
-// const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 const Event = require("../models/Event.model");
 const Foodtruck = require("../models/Foodtruck.model");
@@ -19,9 +19,10 @@ router.post("/", (req, res, next) => {
         foodtruck: foodtruckId
     };
 
+
     Event.create(newEventDetails)
         .then(eventFromDB => {
-            return Foodtruck.findByIdAndUpdate(foodtruckId, { $push: { events: eventFromDB._id } });
+            return Foodtruck.findByIdAndUpdate(foodtruckId, { $push: { events: eventFromDB._id }}, {new: true});
         })
         .then(response => res.status(201).json(response))
         .catch(err => {
@@ -37,7 +38,6 @@ router.post("/", (req, res, next) => {
 // GET /api/events -  Retrieves all of the events
 router.get("/", (req, res, next) => {
     Event.find()
-        .populate("events")
         .then(response => {
             res.json(response)
         })
@@ -93,7 +93,7 @@ router.delete('/:eventId', (req, res, next) => {
 
     Event.findByIdAndDelete(eventId)
     .then(() => {
-      res.redirect("/foodtrucks");
+      res.json({message: "Event was deleted"});
     })
     .catch((error) => {
       next(error);
