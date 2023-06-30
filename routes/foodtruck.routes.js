@@ -44,6 +44,24 @@ router.get("/", (req, res, next) => {
     });
 });
 
+// GET /api/foodtrucks/:foodtruckId  -  Retrieves one foodtrucks
+router.get("/:foodtruckId", (req, res, next) => {
+  const { foodtruckId } = req.params;
+
+  Foodtruck.findById(foodtruckId)
+    .populate("events")
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      console.log("error getting list of foodtrucks", err);
+      res.status(500).json({
+        message: "error getting list of foodtrucks",
+        error: err,
+      });
+    });
+});
+
 // PUT /api/foodtrucks/:foodtruckId  -  Updates a specific foodtrucks by id
 router.put("/:foodtruckId", (req, res, next) => {
   const { foodtruckId } = req.params;
