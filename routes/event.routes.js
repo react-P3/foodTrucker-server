@@ -6,16 +6,8 @@ const Foodtruck = require("../models/Foodtruck.model");
 
 //  POST /api/events  -  Creates a new event
 router.post("/", (req, res, next) => {
-  const {
-    name,
-    description,
-    foodtruckId,
-    location,
-    address,
-    time,
-    date,
-    comments,
-  } = req.body;
+  const { name, description, location, address, time, date, foodtruckId } =
+    req.body;
 
   const newEventDetails = {
     name: name,
