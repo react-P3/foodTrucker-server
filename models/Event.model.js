@@ -11,8 +11,7 @@ const eventSchema = new Schema({
   comments: [String],
   foodtruck: { type: Schema.Types.ObjectId, ref: "Foodtruck" },
   createdBy: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
+    type: Schema.Types.ObjectId, ref: "User",
   },
 });
 
