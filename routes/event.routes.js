@@ -16,8 +16,7 @@ router.post("/", (req, res, next) => {
     address: address,
     time: time,
     date: date,
-    comments: comments,
-    foodtruck: foodtruckId,
+    foodtruck: foodtruckId
   };
 
   Event.create(newEventDetails)
