@@ -4,9 +4,8 @@ const { Schema, model } = mongoose;
 const truckSchema = new Schema({
   name: String,
   category: String,
-  image: String,
+  imageUrl: String,
   owner: String,
-  comments: [String],
   events: [{ type: Schema.Types.ObjectId, ref: "Event" }],
 });
 
