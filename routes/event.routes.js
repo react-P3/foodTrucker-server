@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 
 const Event = require("../models/Event.model");
 const Foodtruck = require("../models/Foodtruck.model");
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 //  POST /api/events  -  Creates a new event
 router.post("/", (req, res, next) => {
@@ -16,7 +17,7 @@ router.post("/", (req, res, next) => {
     address: address,
     time: time,
     date: date,
-    foodtruck: foodtruckId
+    foodtruck: foodtruckId,
   };
 
   Event.create(newEventDetails)
@@ -35,6 +36,19 @@ router.post("/", (req, res, next) => {
         error: err,
       });
     });
+});
+
+router.get("/:eventId", async (req, res) => {
+  try {
+    const { eventId } = req.params;
+
+    const event = await Event.findById(eventId);
+
+    return res.status(200).json(event);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "cannot find this event :)" });
+  }
 });
 
 // GET /api/events -  Retrieves all of the events
@@ -82,7 +96,7 @@ router.put("/:eventId", (req, res, next) => {
     });
 });
 
-// DELETE /api/event/:eventId  -  Delete a specific Event by id
+// DELETE /api/events/:eventId  -  Delete a specific Event by id
 router.delete("/:eventId", (req, res, next) => {
   const { eventId } = req.params;
 
