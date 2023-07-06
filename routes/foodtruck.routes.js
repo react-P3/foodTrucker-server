@@ -1,20 +1,21 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 const Foodtruck = require("../models/Foodtruck.model");
 const Event = require("../models/Event.model");
-const fileUploader = require("../config/cloudinary.config");
 
 //  POST /api/foodtrucks  -  Creates a new truck
-router.post("/", (req, res, next) => {
-  const { name, category, imageUrl, owner, comments } = req.body;
+router.post("/", isAuthenticated, (req, res, next) => {
+  const { name, category, imageUrl, owner, comments, createdBy } = req.body;
 
   const newFoodtruck = {
     name: name,
     category: category,
-    image: imageUrl,
+    imageUrl: imageUrl,
     owner: owner,
     comments: comments,
+    createdBy: req.payload._id
   };
 
   Foodtruck.create(newFoodtruck)
@@ -42,21 +43,6 @@ router.get("/", (req, res, next) => {
         error: err,
       });
     });
-});
-
-// POST "/api/upload" => Route that receives the image, sends it to Cloudinary via the fileUploader and returns the image URL
-router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
-  // console.log("file is: ", req.file)
-
-  if (!req.file) {
-    next(new Error("No file uploaded!"));
-    return;
-  }
-
-  // Get the URL of the uploaded file and send it as a response.
-  // 'fileUrl' can be any name, just make sure you remember to use the same when accessing it on the frontend
-
-  res.json({ fileUrl: req.file.path });
 });
 
 // GET /api/foodtrucks/:foodtruckId  -  Retrieves one foodtrucks
@@ -91,7 +77,7 @@ router.put("/:foodtruckId", (req, res, next) => {
     category: req.body.category,
     image: req.body.image,
     owner: req.body.owner,
-    comments: req.body.comments,
+    comments: req.body.comments
   };
 
   Foodtruck.findByIdAndUpdate(foodtruckId, newDetails, { new: true })

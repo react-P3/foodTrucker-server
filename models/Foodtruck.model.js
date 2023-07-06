@@ -7,6 +7,9 @@ const truckSchema = new Schema({
   imageUrl: String,
   owner: String,
   events: [{ type: Schema.Types.ObjectId, ref: "Event" }],
+  createdBy: {
+    type: Schema.Types.ObjectId, ref: "User",
+  }
 });
 
 module.exports = model("Truck", truckSchema);
