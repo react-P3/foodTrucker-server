@@ -1,12 +1,13 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
 
+
 const Event = require("../models/Event.model");
 const Foodtruck = require("../models/Foodtruck.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 //  POST /api/events  -  Creates a new event
-router.post("/", (req, res, next) => {
+router.post("/", isAuthenticated, (req, res, next) => {
   const { name, description, location, address, time, date, foodtruckId } =
     req.body;
 
@@ -18,8 +19,10 @@ router.post("/", (req, res, next) => {
     time: time,
     date: date,
     foodtruck: foodtruckId,
+    createdBy: req.payload._id
   };
 
+  console.log("newEventDetails", newEventDetails);
   Event.create(newEventDetails)
     .then((eventFromDB) => {
       return Foodtruck.findByIdAndUpdate(
