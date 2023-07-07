@@ -38,7 +38,7 @@ Please refer to the frontend repository's documentation for information on setti
 
 https://foodtrucker.netlify.app/
 
-https://foodtrucker.adaptable.app/
+https://foodtrucker-api.adaptable.app/
 
 Cheers
 Joao & Carolin
